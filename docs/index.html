@@ -1,1 +1,234 @@
-Later on ..
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordStat Ontology</title>
+    <meta name="description" content="WordStat is a linguistic ontology that defines a schema for structuring linguistic data, supporting NLP, AI-driven text analysis, and vocabulary enrichment.">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+        hr {
+            margin: 20px 0;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            display: block;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+    <body>
+    
+        <h1>WordStat Ontology</h1>
+        <p><strong>WordStat</strong> is a linguistic ontology that defines a schema for structuring linguistic data, supporting NLP, AI-driven text analysis, and vocabulary enrichment.</p>
+
+        <code>
+            @prefix ws: &lt;https://purl.archive.org/wordstat/&gt; .
+        </code>
+    
+        <hr>
+    
+        <h2>Version</h2>
+        <p>Current version: <strong>0.0.9</strong> (Draft). Future refinements will follow semantic versioning.</p>
+    
+        <hr>
+    
+        <h2>Contact</h2>
+        <p>For any inquiries related to this ontology, please contact: <a href="mailto:mika@juhani.eu">mika@juhani.eu</a></p>
+    
+        <hr>
+    
+        <h2>License</h2>
+        <p>This ontology is released under the <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 (CC BY 4.0)</a> license, which allows modification and reuse with attribution.</p>
+    
+        <code>
+        @prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+        @prefix cc: &lt;http://creativecommons.org/ns#&gt; .
+        @prefix ws: &lt;https://purl.archive.org/wordstat/&gt; .
+    
+        <https://purl.archive.org/wordstat/&gt;
+            dcterms:title "WordStat Ontology" ;
+            dcterms:creator "mika@juhani.eu" ;
+            dcterms:license &lt;https://creativecommons.org/licenses/by/4.0/&gt; ;
+            dcterms:hasVersion "0.1.0" .
+        </code></code>
+    
+        <hr>
+    
+        <h2>Classes and Properties</h2>
+    
+        <h3 id="Context">Context</h3>
+        <p>A linguistic unit representing a broader section of text, such as a paragraph or chapter.</p>
+        <code>
+        :text1 a ws:Context .
+        </code>
+    
+        <h3 id="MainContext">MainContext</h3>
+        <p>Defines the primary context in a dataset. There can be only one per set.</p>
+        <code>
+        :document1 a ws:MainContext .
+        </code>
+    
+        <h3 id="hasSubContext">Has SubContext</h3>
+        <p>Defines a hierarchical relationship where a larger linguistic unit contains a smaller one.</p>
+        <code>
+        :chapter1 ws:hasSubContext :paragraph2 .
+        </code>
+    
+        <h3 id="subContextOf">Sub Context Of</h3>
+        <p>Inverse relation of hasSubContext, defining a bottom-up linguistic structure.</p>
+        <code>
+        :paragraph2 ws:subContextOf :chapter1 .
+        </code>
+    
+        <h3 id="followsZipf">Follows Zipf</h3>
+        <p>Indicates whether a text adheres to Zipf’s law regarding word frequency.</p>
+        <code>
+        :corpus1 ws:followsZipf true .
+        </code>
+    
+        <h3 id="ttr">Type-Token Ratio (TTR)</h3>
+        <p>Measures lexical diversity in a text.</p>
+        <code>
+        :document1 ws:ttr "0.58"^^xsd:decimal .
+        </code>
+    
+        <h3 id="Token">Token</h3>
+        <p>The smallest meaningful linguistic unit.</p>
+        <code>
+        :word1 a ws:Token ;
+               rdfs:label "analysis" .
+        </code>
+    
+        <h3 id="functionWords">Function Words</h3>
+        <p>Words with primarily grammatical functions.</p>
+        <code>
+        :word1 a ws:functionWords .
+        </code>
+    
+        <h3 id="contentWords">Content Words</h3>
+        <p>Words carrying significant meaning.</p>
+        <code>
+        :word2 a ws:contentWords .
+        </code>
+    
+        <h3 id="inContext">In Context</h3>
+        <p>Indicates the context in which a token appears.</p>
+        <code>
+        :word1 ws:inContext :chapter1 .
+        </code>
+    
+        <h3 id="siblingContextWith">Sibling Context With</h3>
+        <p>Indicates a shared characteristic between two contexts.</p>
+        <code>
+        :paragraph1 ws:siblingContextWith :paragraph2 .
+        </code>
+    
+        <h3 id="countInContext">Count In Context</h3>
+        <p>Represents the number of occurrences of a token within a specific context.</p>
+        <code>
+        :word1 ws:countInContext "15"^^xsd:integer .
+        </code>
+    
+        <h3 id="percentageInContext">Percentage In Context</h3>
+        <p>Represents a token’s frequency relative to the total number of tokens.</p>
+        <code>
+        :word1 ws:percentageInContext "0.02"^^xsd:decimal .
+        </code>
+    
+        <h3 id="isFunctionWord">Is Function Word</h3>
+        <p>Classifies a word as a function word.</p>
+        <code>
+        :word1 ws:isFunctionWord true .
+        </code>
+    
+        <h3 id="isContentWord">Is Content Word</h3>
+        <p>Classifies a word as a content word.</p>
+        <code>
+        :word2 ws:isContentWord true .
+        </code>
+
+        <h3 id="Noun">Noun</h3>
+        <p>A lexical category representing objects, people, or concepts.</p>
+        <code>
+        :word3 ws:POS ws:Noun .
+        </code>
+    
+        <h3 id="Verb">Verb</h3>
+        <p>A lexical category representing actions or states.</p>
+        <code>
+        :word4 ws:POS ws:Verb .
+        </code>
+    
+        <h3 id="Pronoun">Pronoun</h3>
+        <p>A word that replaces a noun in discourse.</p>
+        <code>
+        :word5 ws:POS ws:Pronoun .
+        </code>
+    
+        <h3 id="Adjective">Adjective</h3>
+        <p>Describes or modifies a noun.</p>
+        <code>
+        :word6 ws:POS ws:Adjective .
+        </code>
+    
+        <h3 id="Adverb">Adverb</h3>
+        <p>Modifies verbs, adjectives, or other adverbs.</p>
+        <code>
+        :word7 ws:POS ws:Adverb .
+        </code>
+    
+        <h3 id="Preposition">Preposition</h3>
+        <p>Defines spatial or temporal relationships.</p>
+        <code>
+        :word8 ws:POS ws:Preposition .
+        </code>
+    
+        <h3 id="Conjunction">Conjunction</h3>
+        <p>Connects linguistic units.</p>
+        <code>
+        :word9 ws:POS ws:Conjunction .
+        </code>
+    
+        <h3 id="Interjection">Interjection</h3>
+        <p>Expresses emotions or reactions.</p>
+        <code>
+        :word10 ws:POS ws:Interjection .
+        </code>
+    
+        <h3 id="Determiner">Determiner</h3>
+        <p>Specifies a noun’s reference.</p>
+        <code>
+        :word11 ws:POS ws:Determiner .
+        </code>
+    
+        <hr>
+    
+        <h2>Conclusion</h2>
+        <p>WordStat provides a structured ontology for AI-driven text analysis, vocabulary enrichment, and NLP applications.</p>
+    
+    </body>
+    </html>
+    
+
+
+
+
+
+
+
