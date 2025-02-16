@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordStat Ontology - SHACL Rules</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1, h2 { color: #2c3e50; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>WordStat Ontology - SHACL Rules</h1>
+    <p>This page defines SHACL rules for validating instances of the WordStat Ontology.</p>
+    
+    <h2>SHACL Constraints</h2>
+    <pre>
+@prefix sh: &lt;http://www.w3.org/ns/shacl#&gt; .
+@prefix ws: &lt;https://purl.archive.org/wordstat/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+
+# Context Class Shape
+ws:ContextShape a sh:NodeShape ;
+    sh:targetClass ws:Context ;
+    sh:property [
+        sh:path ws:hasSubContext ;
+        sh:class ws:Context ;
+        sh:message "Each Context can have sub-contexts." ;
+    ] .
+
+# MainContext Class Shape
+ws:MainContextShape a sh:NodeShape ;
+    sh:targetClass ws:MainContext ;
+    sh:property [
+        sh:path ws:hasSubContext ;
+        sh:class ws:Context ;
+        sh:message "MainContext can contain sub-contexts." ;
+    ] ;
+    sh:property [
+        sh:path ws:subContextOf ;
+        sh:disjoint ws:MainContext ;
+        sh:message "MainContext cannot be a sub-context." ;
+    ] .
+
+# Token Shape
+ws:TokenShape a sh:NodeShape ;
+    sh:targetClass ws:Token ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Each Token must have a label." ;
+    ] .
+
+# Count in Context Constraint
+ws:CountInContextShape a sh:NodeShape ;
+    sh:targetClass ws:Token ;
+    sh:property [
+        sh:path ws:countInContext ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:message "Token count must be a non-negative integer." ;
+    ] .
+
+# Percentage in Context Constraint
+ws:PercentageInContextShape a sh:NodeShape ;
+    sh:targetClass ws:Token ;
+    sh:property [
+        sh:path ws:percentageInContext ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+        sh:message "Percentage in context must be between 0 and 1." ;
+    ] .
+
+# Part of Speech (POS) Constraints
+ws:POSShape a sh:NodeShape ;
+    sh:targetClass ws:Token ;
+    sh:property [
+        sh:path ws:POS ;
+        sh:in (ws:Noun ws:Verb ws:Pronoun ws:Adjective ws:Adverb ws:Preposition ws:Conjunction ws:Interjection ws:Determiner) ;
+        sh:message "POS must be one of the defined lexical categories." ;
+    ] .
+
+# Function vs Content Words Constraint
+ws:FunctionContentWordShape a sh:NodeShape ;
+    sh:targetClass ws:Token ;
+    sh:property [
+        sh:path ws:isFunctionWord ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path ws:isContentWord ;
+        sh:datatype xsd:boolean ;
+    ] ;
+    sh:property [
+        sh:path ws:isFunctionWord ;
+        sh:disjoint ws:isContentWord ;
+        sh:message "A token cannot be both a function word and a content word." ;
+    ] .
+
+# Zipf’s Law Constraint
+ws:ZipfShape a sh:NodeShape ;
+    sh:targetClass ws:Context ;
+    sh:property [
+        sh:path ws:followsZipf ;
+        sh:datatype xsd:boolean ;
+        sh:message "This property must be true or false." ;
+    ] .
+
+    </pre>
+</body>
+</html>
